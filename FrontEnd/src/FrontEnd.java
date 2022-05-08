@@ -26,8 +26,6 @@ public class FrontEnd {
                                 .POST(HttpRequest.BodyPublishers.ofString(resetValue.toJSONString()))
                                 .build();
 
-                        System.out.println(request.uri());
-
                         HttpResponse<String> response = HttpClient.newBuilder()
                                 .build()
                                 .send(request, HttpResponse.BodyHandlers.ofString());
