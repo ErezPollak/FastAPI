@@ -28,17 +28,16 @@ public class Board extends JFrame {
             int keycode = e.getKeyCode();
             switch (keycode) {
                 case KeyEvent.VK_LEFT -> {
-
+                    gc.set_n(200);
                 }
                 case KeyEvent.VK_RIGHT -> {
-
+                    gc.set_n(100);
                 }
                 case KeyEvent.VK_UP -> {
-
+                    gc.set_n(300);
                 }
-
                 case KeyEvent.VK_DOWN -> {
-
+                    gc.set_n(400);
                 }
 
             }
