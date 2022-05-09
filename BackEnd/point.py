@@ -15,6 +15,9 @@ class Point:
         self.x = self.x + cdX[d]
         self.y = self.y + cdY[d]
 
+    def __eq__(self, o: object) -> bool:
+        return self.x == o.x and self.y == o.y
+
 
 def next_point(p: Point, d):
     new_p = Point(p.x + cdX[d], p.y + cdY[d])

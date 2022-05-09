@@ -68,8 +68,6 @@ class SetGameParam(BaseModel):
 async def set_player_param(input: SetGameParam, request: Request):
     global game
 
-
-
     game.operation_from_function_matrix(user_list.index(user_hash_generate(request)),
                                         input.function, input.param)
 
