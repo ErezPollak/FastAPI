@@ -4,13 +4,14 @@ from point import Point
 from player import Player
 
 
+
 class SnakeGame:
 
     def __init__(self):
-        player1 = Player()
-        player2 = Player()
+        player1 = Player(Point(2,3))
+        player2 = Player(Point(6,7))
         self.players = (player1, player2)
-        self.food = Point(9, 1)
+        self.food = Point(11, 1)
         self.function_matrix = [
             [player1.set_direction], [player2.set_direction]
         ]
@@ -20,10 +21,11 @@ class SnakeGame:
             player.move()
             if player.head == self.food:
                 player.append_tail()
+                self.food.rand_point()
 
     def get_state(self):
 
-        state = {}
+        state = {"food": str(self.food)}
 
         for i, player in enumerate(self.players):
             state[f"player{i}"] = {"head": str(player.head), "tail": str(player.tail)}
