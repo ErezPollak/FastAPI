@@ -10,6 +10,9 @@ class SnakeGame:
         self.head2 = Point(4, 5)
         self.d1 = 0
         self.d2 = 2
+        self.function_matrix = [
+            [self.set_d1], [self.set_d2]
+        ]
 
     def update_state(self):
         self.head1.move(self.d1)
@@ -32,3 +35,6 @@ class SnakeGame:
                 "y": str(self.head2.y),
             }
         }
+
+    def operation_from_function_matrix(self, user, function, param):
+        self.function_matrix[user][function](param)

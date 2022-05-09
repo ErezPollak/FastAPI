@@ -1,5 +1,3 @@
-import json
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 from starlette.requests import Request
@@ -7,14 +5,11 @@ from starlette.requests import Request
 from timerRepeat import RepeatTimer
 from snake_game import SnakeGame
 
-
-class DirectionInput(BaseModel):
-    new_direction: int
-
-
 app = FastAPI()
 
 game = SnakeGame()
+
+MAX_AMOUNT_OF_USERS = len(game.function_matrix)
 
 
 def update_game_state():
@@ -23,9 +18,7 @@ def update_game_state():
 
 def user_hash_generate(request):
     client_host = request.client.host
-    # response_json["client_host"] = client_host
     client_port = request.client.port
-    # response_json["client_port"] = client_port
 
     return str(client_host) + "," + str(client_port)
 
@@ -45,11 +38,17 @@ async def hand_shake(request: Request):
     user_hash = user_hash_generate(request)
     response_json["hash"] = user_hash
 
-    if not user_hash in user_list:
-        user_list.append(user_hash)
-        response_json["user_number"] = str(user_list.index(user_hash))
-    else:
-        response_json["user_number"] = user_list.index(user_hash)
+    if user_hash in user_list:
+        response_json["error_adding"] = f"you are registered already as #" \
+                                        f"{user_list.index(user_hash)}"
+        return response_json
+
+    if len(user_list) == MAX_AMOUNT_OF_USERS:
+        response_json["error_adding"] = "no room for more players!!"
+        return response_json
+
+    user_list.append(user_hash)
+    response_json["user_number"] = str(user_list.index(user_hash))
 
     return response_json
 
@@ -60,14 +59,17 @@ async def get_state_for_painting():
     return game.get_state()
 
 
-@app.put("/api/direction")
-async def set_direction(input: DirectionInput, request: Request):
+class SetGameParam(BaseModel):
+    function: int
+    param: int
+
+
+@app.put("/api/set_param")
+async def set_player_param(input: SetGameParam, request: Request):
     global game
 
-    function_dict = {user_list[0]: game.set_d1,
-                     user_list[1]: game.set_d2}
+    game.operation_from_function_matrix(user_list.index(user_hash_generate(request)),
+                                        input.function, input.param)
 
-    function_dict[user_hash_generate(request)](input.new_direction)
-
-    return {"massage": f"successfully changed direction{input.new_direction}",
+    return {"massage": f"successfully changed param {input.param}",
             "port": f"{request.client.port}"}
