@@ -28,7 +28,7 @@ class Point:
         return self.x == o.x and self.y == o.y
 
     def __str__(self) -> str:
-        return f"({self.x},{self.y})"
+        return f"{self.x} {self.y}"
 
 
 def round_height_to_board(y):

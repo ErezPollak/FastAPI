@@ -12,9 +12,9 @@ class Player:
         self.direction = new_direction
 
     def move(self):
-        self.tail.append(self.direction)
-        self.tail.pop()
         self.head.move(self.direction)
+        self.tail.insert(0, self.direction)
+        self.tail.pop()
 
     def append_tail(self):
-        self.tail.append(self.direction)
+        self.tail.insert(0, self.direction)
